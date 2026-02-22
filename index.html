@@ -2,67 +2,84 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Admin Panel - Accès Restreint</title>
+    <title>🚨 ALERTE SYSTÈME 🚨</title>
     <style>
-        body { background-color: black; color: #00ff00; font-family: 'Courier New', monospace; text-align: center; margin: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: none; }
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; }
-        .btn { padding: 20px 40px; background: #00ff00; color: black; font-weight: bold; border: none; cursor: pointer; border-radius: 5px; font-size: 1.2rem; }
-        .danger { color: #ff0000; font-size: 2rem; font-weight: bold; display: none; }
-        .loading { width: 80%; border: 1px solid #00ff00; height: 20px; margin-top: 20px; display: none; }
-        .bar { background: #00ff00; height: 100%; width: 0%; transition: width 0.2s; }
+        body { background-color: #000; color: #ff0000; font-family: "Courier New", monospace; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        #glitch-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 0, 0, 0.1); display: none; pointer-events: none; }
+        .loading-bar { width: 300px; border: 2px solid #ff0000; height: 20px; position: relative; }
+        .progress { background: #ff0000; width: 0%; height: 100%; }
+        .hidden { display: none; }
+        #console { text-align: left; width: 80%; font-size: 14px; color: #00ff00; }
+        @keyframes shake { 0% { transform: translate(1px, 1px); } 10% { transform: translate(-1px, -2px); } 100% { transform: translate(1px, -2px); } }
     </style>
 </head>
-<body>
+<body onclick="launchScare()">
 
-    <div id="overlay">
-        <h2>⚠️ MISE À JOUR ROBLOX 2026 ⚠️</h2>
-        <p>Cliquez pour synchroniser vos données et recevoir 10 000 Robux.</p>
-        <button class="btn" onclick="startPrank()">SYNCHRONISER</button>
+    <div id="start">
+        <h1 style="color: white;">Vérification de sécurité Roblox...</h1>
+        <button style="padding: 15px; cursor: pointer;">CLIQUER POUR ANALYSER</button>
     </div>
 
-    <div id="status">SYSTÈME PRÊT...</div>
-    <div class="loading" id="loadBox"><div class="bar" id="bar"></div></div>
-    <p id="finalMsg" class="danger">ERREUR CRITIQUE : VIRUS DÉTECTÉ</p>
+    <div id="prank" class="hidden">
+        <h1 id="msg">ANALYSE EN COURS...</h1>
+        <div class="loading-bar"><div id="bar" class="progress"></div></div>
+        <div id="console"></div>
+    </div>
+
+    <div id="glitch-overlay"></div>
 
     <script>
-        function startPrank() {
-            // Demande le plein écran
-            let elem = document.documentElement;
-            if (elem.requestFullscreen) { elem.requestFullscreen(); } 
-            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
-
-            // Cache le bouton de départ
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('loadBox').style.display = 'block';
+        function launchScare() {
+            document.getElementById('start').classList.add('hidden');
+            document.getElementById('prank').classList.remove('hidden');
+            
+            // Son d'erreur (optionnel si tu as un fichier son)
+            // let audio = new Audio('https://www.myinstants.com/media/sounds/windows-xp-error.mp3');
             
             let bar = document.getElementById('bar');
-            let status = document.getElementById('status');
-            let progress = 0;
+            let consoleDiv = document.getElementById('console');
+            let msg = document.getElementById('msg');
+            let p = 0;
 
-            // Fait vibrer le téléphone (Android)
-            if (navigator.vibrate) { navigator.vibrate([200, 100, 200, 100, 500]); }
+            let logs = [
+                "> Accès au noyau système...",
+                "> Suppression de C:/Users/Admin/Documents...",
+                "> Désactivation du Pare-feu Windows...",
+                "> ATTENTION : Température CPU critique (98°C)",
+                "> Envoi de l'historique de navigation au serveur...",
+                "> ÉCHEC DE LA RÉCUPÉRATION DU SYSTÈME"
+            ];
 
+            let i = 0;
             let interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 5) + 1;
-                bar.style.width = progress + "%";
-                
-                if(progress < 30) status.innerText = "Accès aux fichiers système...";
-                else if(progress < 60) status.innerText = "Extraction des mots de passe Discord...";
-                else if(progress < 90) status.innerText = "Envoi des données vers le serveur distant...";
-                else if(progress >= 100) {
-                    clearInterval(interval);
-                    status.style.display = 'none';
-                    document.getElementById('loadBox').style.display = 'none';
-                    document.getElementById('finalMsg').style.display = 'block';
-                    document.body.style.backgroundColor = 'darkred';
-                    
-                    // Alerte finale qui boucle
-                    setTimeout(() => {
-                        alert("SYSTÈME PIRATÉ PAR GEMINI-AI 😈\n\nTes données sont à moi maintenant !");
-                    }, 500);
+                p += 2;
+                bar.style.width = p + "%";
+
+                if (p % 10 === 0 && i < logs.length) {
+                    consoleDiv.innerHTML += logs[i] + "<br>";
+                    i++;
+                    // audio.play();
                 }
-            }, 150);
+
+                if (p >= 100) {
+                    clearInterval(interval);
+                    triggerFinal();
+                }
+            }, 100);
+        }
+
+        function triggerFinal() {
+            document.body.style.animation = "shake 0.1s infinite";
+            document.getElementById('glitch-overlay').style.display = 'block';
+            document.getElementById('msg').innerText = "FATAL ERROR : DISQUE DUR CORROMPU";
+            
+            setInterval(() => {
+                document.body.style.backgroundColor = (document.body.style.backgroundColor === 'black') ? 'red' : 'black';
+            }, 50);
+
+            setTimeout(() => {
+                alert("⚠️ ALERTE DE SÉCURITÉ ⚠️\n\nTon ordinateur a été pris en otage.\nRedémarrer ne servira à rien.\n\n(C'est une blague ! Tu t'es encore fait avoir ! 😂)");
+            }, 2000);
         }
     </script>
 </body>
