@@ -2,64 +2,92 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>🚨 SYSTÈME VERROUILLÉ 🚨</title>
+    <title>⚠️ ALERTE INTRUSION ⚠️</title>
     <style>
-        body { background-color: #000; color: #ff0000; font-family: 'Arial Black', sans-serif; text-align: center; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        #ransom-box { border: 5px solid #ff0000; padding: 20px; background: rgba(50, 0, 0, 0.9); box-shadow: 0 0 50px #ff0000; max-width: 80%; }
-        h1 { font-size: 3rem; margin: 0; }
-        .strawberry { font-size: 5rem; animation: pulse 0.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        @keyframes shake { 0% { transform: translate(2px, 2px); } 50% { transform: translate(-2px, -2px); } 100% { transform: translate(2px, -2px); } }
+        body { background-color: #000; color: #ff0000; font-family: 'Courier New', monospace; text-align: center; overflow: hidden; height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; cursor: none; }
+        #screamer {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: url('https://p16-va.lemonatory.com/obj/lemon-resource-va/6911667557121230854') no-repeat center center;
+            background-size: cover; z-index: 9999; display: none;
+        }
+        #ransom-box { border: 4px dashed red; padding: 25px; background: rgba(20, 0, 0, 0.9); box-shadow: 0 0 40px red; }
+        .loc-box { color: #00ff00; background: #111; padding: 10px; margin-top: 15px; border: 1px solid #00ff00; font-size: 0.9rem; text-align: left; }
+        #timer { font-size: 3rem; color: yellow; margin: 10px 0; }
         .glitch { animation: shake 0.1s infinite; }
-        .btn-pay { background: #ff0000; color: white; padding: 20px; border: none; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        @keyframes shake { 0% { transform: translate(1px, 1px); } 100% { transform: translate(-1px, -1px); } }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-    <div id="overlay" onclick="startVirus()" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:999; cursor:pointer; background: rgba(0,0,0,0.1);">
-        <h2 style="color:white; margin-top:20%;">[ CLIQUEZ POUR RÉCUPÉRER VOS ROBUX ]</h2>
+    <div id="screamer"></div>
+
+    <div id="overlay" onclick="startPrank()" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000; background:black; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;">
+        <h1 style="color:white;">⚠️ ERREUR CRITIQUE ROBLOX ⚠️</h1>
+        <p style="color:gray;">Le plugin "RobuxGenerator" a cessé de fonctionner.</p>
+        <div style="background:white; color:black; padding: 10px; font-weight:bold;">RELANCER LA CONNEXION</div>
     </div>
 
-    <div id="content" class="hidden" style="display:none;">
+    <div id="content" style="display:none;">
         <div id="ransom-box" class="glitch">
-            <h1>SÉCURITÉ CORROMPUE</h1>
-            <p class="strawberry">🍓</p>
-            <p>Tous vos fichiers ont été chiffrés par le protocole <strong>STRAWBERRY_RED</strong>.</p>
-            <p style="color: yellow; font-size: 1.2rem;">POUR DÉBLOQUER VOTRE PC :</p>
-            <p>Envoyez immédiatement un <strong>STRAWBERRY</strong> à ton ami pour obtenir la clé de décryptage.</p>
-            <div style="background: black; padding: 10px; font-family: monospace; color: #00ff00;">
-                ID DE TRANSACTION : STRAW-404-666-ROBLOX
+            <h1 style="margin:0;">SYSTÈME INFECTÉ 🍓</h1>
+            
+            <div class="loc-box">
+                > ÉTAT : CONNECTÉ<br>
+                > PAYS : FRANCE 🇫🇷<br>
+                > RÉGION : HAUTS-DE-FRANCE<br>
+                > DÉPT : 80 (SOMME)<br>
+                > PROXIMITÉ : RIVERY / AMIENS<br>
+                > IP : 192.168.1.XX (MASQUÉE)
             </div>
-            <button class="btn-pay" onclick="alert('ERREUR : Solde de fraises insuffisant !')">PAYER EN FRAISES 🍓</button>
+
+            <p style="color:yellow; margin-top:15px;">PROTOCOLE DE RANÇON ACTIVÉ</p>
+            <div id="timer">60</div>
+            <p>Envoyez une FRAISE pour stopper le cryptage.</p>
         </div>
     </div>
 
     <script>
-        // Utilisation d'un son d'alarme système strident
         const alarm = new Audio('https://www.myinstants.com/media/sounds/nuke-alarm.mp3');
-        alarm.loop = true;
+        const scream = new Audio('https://www.myinstants.com/media/sounds/screamer.mp3');
+        let timeLeft = 60;
+        let active = false;
 
-        function startVirus() {
-            // Demande le plein écran
-            let elem = document.documentElement;
-            if (elem.requestFullscreen) { elem.requestFullscreen(); }
-
-            // Cache l'overlay et montre le virus
+        function startPrank() {
+            active = true;
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('content').style.display = 'block';
+            if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen(); }
             
-            // Lance le son à fond
-            alarm.volume = 1.0;
             alarm.play();
+            alarm.loop = true;
 
-            // Fait vibrer le téléphone
-            if (navigator.vibrate) { navigator.vibrate([500, 200, 500, 200, 500]); }
-
-            // Change le titre de l'onglet pour faire peur
-            setInterval(() => {
-                document.title = document.title === "🚨 SYSTÈME VERROUILLÉ 🚨" ? "🍓 DONNE UNE FRAISE 🍓" : "🚨 SYSTÈME VERROUILLÉ 🚨";
-            }, 500);
+            let countdown = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    triggerScreamer();
+                }
+            }, 1000);
         }
+
+        function triggerScreamer() {
+            alarm.pause();
+            scream.play();
+            document.getElementById('screamer').style.display = 'block';
+            if (navigator.vibrate) { navigator.vibrate([1000, 500, 2000]); }
+            
+            setTimeout(() => {
+                alert("ALERTE DU 80 ! 🍓\n\nT'as cru que j'étais un vrai hacker d'Amiens ? 😂");
+                location.reload();
+            }, 3000);
+        }
+
+        // Si il touche au clavier -> SCREAMER DIRECT !
+        window.onkeydown = function() {
+            if(active) triggerScreamer();
+        };
     </script>
 </body>
 </html>
+
