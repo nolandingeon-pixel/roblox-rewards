@@ -2,84 +2,63 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>🚨 ALERTE SYSTÈME 🚨</title>
+    <title>🚨 SYSTÈME VERROUILLÉ 🚨</title>
     <style>
-        body { background-color: #000; color: #ff0000; font-family: "Courier New", monospace; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        #glitch-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 0, 0, 0.1); display: none; pointer-events: none; }
-        .loading-bar { width: 300px; border: 2px solid #ff0000; height: 20px; position: relative; }
-        .progress { background: #ff0000; width: 0%; height: 100%; }
-        .hidden { display: none; }
-        #console { text-align: left; width: 80%; font-size: 14px; color: #00ff00; }
-        @keyframes shake { 0% { transform: translate(1px, 1px); } 10% { transform: translate(-1px, -2px); } 100% { transform: translate(1px, -2px); } }
+        body { background-color: #000; color: #ff0000; font-family: 'Arial Black', sans-serif; text-align: center; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        #ransom-box { border: 5px solid #ff0000; padding: 20px; background: rgba(50, 0, 0, 0.9); box-shadow: 0 0 50px #ff0000; max-width: 80%; }
+        h1 { font-size: 3rem; margin: 0; }
+        .strawberry { font-size: 5rem; animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        @keyframes shake { 0% { transform: translate(2px, 2px); } 50% { transform: translate(-2px, -2px); } 100% { transform: translate(2px, -2px); } }
+        .glitch { animation: shake 0.1s infinite; }
+        .btn-pay { background: #ff0000; color: white; padding: 20px; border: none; font-weight: bold; cursor: pointer; margin-top: 20px; }
     </style>
 </head>
-<body onclick="launchScare()">
+<body>
 
-    <div id="start">
-        <h1 style="color: white;">Vérification de sécurité Roblox...</h1>
-        <button style="padding: 15px; cursor: pointer;">CLIQUER POUR ANALYSER</button>
+    <div id="overlay" onclick="startVirus()" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:999; cursor:pointer; background: rgba(0,0,0,0.1);">
+        <h2 style="color:white; margin-top:20%;">[ CLIQUEZ POUR RÉCUPÉRER VOS ROBUX ]</h2>
     </div>
 
-    <div id="prank" class="hidden">
-        <h1 id="msg">ANALYSE EN COURS...</h1>
-        <div class="loading-bar"><div id="bar" class="progress"></div></div>
-        <div id="console"></div>
+    <div id="content" class="hidden" style="display:none;">
+        <div id="ransom-box" class="glitch">
+            <h1>SÉCURITÉ CORROMPUE</h1>
+            <p class="strawberry">🍓</p>
+            <p>Tous vos fichiers ont été chiffrés par le protocole <strong>STRAWBERRY_RED</strong>.</p>
+            <p style="color: yellow; font-size: 1.2rem;">POUR DÉBLOQUER VOTRE PC :</p>
+            <p>Envoyez immédiatement un <strong>STRAWBERRY</strong> à ton ami pour obtenir la clé de décryptage.</p>
+            <div style="background: black; padding: 10px; font-family: monospace; color: #00ff00;">
+                ID DE TRANSACTION : STRAW-404-666-ROBLOX
+            </div>
+            <button class="btn-pay" onclick="alert('ERREUR : Solde de fraises insuffisant !')">PAYER EN FRAISES 🍓</button>
+        </div>
     </div>
-
-    <div id="glitch-overlay"></div>
 
     <script>
-        function launchScare() {
-            document.getElementById('start').classList.add('hidden');
-            document.getElementById('prank').classList.remove('hidden');
+        // Utilisation d'un son d'alarme système strident
+        const alarm = new Audio('https://www.myinstants.com/media/sounds/nuke-alarm.mp3');
+        alarm.loop = true;
+
+        function startVirus() {
+            // Demande le plein écran
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen(); }
+
+            // Cache l'overlay et montre le virus
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
             
-            // Son d'erreur (optionnel si tu as un fichier son)
-            // let audio = new Audio('https://www.myinstants.com/media/sounds/windows-xp-error.mp3');
-            
-            let bar = document.getElementById('bar');
-            let consoleDiv = document.getElementById('console');
-            let msg = document.getElementById('msg');
-            let p = 0;
+            // Lance le son à fond
+            alarm.volume = 1.0;
+            alarm.play();
 
-            let logs = [
-                "> Accès au noyau système...",
-                "> Suppression de C:/Users/Admin/Documents...",
-                "> Désactivation du Pare-feu Windows...",
-                "> ATTENTION : Température CPU critique (98°C)",
-                "> Envoi de l'historique de navigation au serveur...",
-                "> ÉCHEC DE LA RÉCUPÉRATION DU SYSTÈME"
-            ];
+            // Fait vibrer le téléphone
+            if (navigator.vibrate) { navigator.vibrate([500, 200, 500, 200, 500]); }
 
-            let i = 0;
-            let interval = setInterval(() => {
-                p += 2;
-                bar.style.width = p + "%";
-
-                if (p % 10 === 0 && i < logs.length) {
-                    consoleDiv.innerHTML += logs[i] + "<br>";
-                    i++;
-                    // audio.play();
-                }
-
-                if (p >= 100) {
-                    clearInterval(interval);
-                    triggerFinal();
-                }
-            }, 100);
-        }
-
-        function triggerFinal() {
-            document.body.style.animation = "shake 0.1s infinite";
-            document.getElementById('glitch-overlay').style.display = 'block';
-            document.getElementById('msg').innerText = "FATAL ERROR : DISQUE DUR CORROMPU";
-            
+            // Change le titre de l'onglet pour faire peur
             setInterval(() => {
-                document.body.style.backgroundColor = (document.body.style.backgroundColor === 'black') ? 'red' : 'black';
-            }, 50);
-
-            setTimeout(() => {
-                alert("⚠️ ALERTE DE SÉCURITÉ ⚠️\n\nTon ordinateur a été pris en otage.\nRedémarrer ne servira à rien.\n\n(C'est une blague ! Tu t'es encore fait avoir ! 😂)");
-            }, 2000);
+                document.title = document.title === "🚨 SYSTÈME VERROUILLÉ 🚨" ? "🍓 DONNE UNE FRAISE 🍓" : "🚨 SYSTÈME VERROUILLÉ 🚨";
+            }, 500);
         }
     </script>
 </body>
