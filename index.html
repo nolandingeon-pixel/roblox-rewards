@@ -2,100 +2,110 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title> ALERTE INTRUSION </title>
+    <title>🚨 CRITICAL SYSTEM FAILURE 🚨</title>
     <style>
-        body { background-color: #000; color: #ff0000; font-family: 'Courier New', monospace; text-align: center; overflow: hidden; height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; cursor: none; }
-        #screamer {
+        body { background-color: #000; color: #ff0000; font-family: 'Courier New', monospace; margin: 0; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; cursor: none; }
+        
+        /* Le Screamer avec sa photo */
+        #screamer-container {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: url('https://p16-va.lemonatory.com/obj/lemon-resource-va/6911667557121230854') no-repeat center center;
-            background-size: cover; z-index: 9999; display: none;
+            background: #000; z-index: 9999; display: none; text-align: center;
         }
-        #ransom-box { border: 4px dashed red; padding: 25px; background: rgba(20, 0, 0, 0.9); box-shadow: 0 0 40px red; z-index: 10; }
-        .loc-box { color: #00ff00; background: #111; padding: 10px; margin-top: 15px; border: 1px solid #00ff00; font-size: 0.8rem; text-align: left; }
-        #timer { font-size: 3rem; color: yellow; margin: 10px 0; }
-        .btn-download { display: none; background: #ff0000; color: white; padding: 15px; text-decoration: none; font-weight: bold; margin-top: 20px; border-radius: 5px; cursor: pointer; }
-        .glitch { animation: shake 0.1s infinite; }
-        @keyframes shake { 0% { transform: translate(1px, 1px); } 100% { transform: translate(-1px, -1px); } }
+        #victim-photo {
+            width: 100%; height: 100%; object-fit: cover; /* La photo prend tout l'écran */
+            filter: contrast(150%) brightness(80%) sepia(50%) hue-rotate(-50deg); /* Effet caméra de surveillance sale */
+        }
+        
+        #overlay-text {
+            position: absolute; top: 20px; left: 20px; color: #00ff00; 
+            text-align: left; font-size: 1.2rem; text-shadow: 2px 2px black;
+        }
+
+        #flash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 10000; display: none;
+        }
+
+        #ransom-box { border: 4px dashed red; padding: 20px; background: rgba(20, 0, 0, 0.9); z-index: 10; }
+        .loc-box { color: #00ff00; background: #111; padding: 10px; border: 1px solid #00ff00; font-size: 0.8rem; text-align: left; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <div id="screamer"></div>
+    <div id="flash"></div>
 
-    <div id="overlay" onclick="startPrank()" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000; background:black; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;">
-        <h1 style="color:white;">⚠️ ERREUR CRITIQUE Window ⚠️</h1>
-        <p style="color:gray;">Le module "Robux-Cloud-80" a crashé.</p>
-        <div style="background:white; color:black; padding: 10px; font-weight:bold;">TENTER UNE RÉCUPÉRATION</div>
+    <div id="screamer-container">
+        <div id="overlay-text">
+            > REC_STREAM: ACTIVE<br>
+            > USER_FOUND: LOCAL_TARGET<br>
+            > LOCATION: DEPT 80 (SOMME)<br>
+            > IP_STATUS: TRACKED
+        </div>
+        <img id="victim-photo" src="https://i.ibb.co/8ggBZMhn/image.jpg" alt="Target">
     </div>
 
-    <div id="content" style="display:none;">
-        <div id="ransom-box" class="glitch">
-            <h1 style="margin:0;">SYSTEM FAILURE 🍓</h1>
-            
-            <div class="loc-box">
-                > ÉTAT : CONNECTÉ<br>
-                > PAYS : FRANCE 🇫🇷<br>
-                > RÉGION : HAUTS-DE-FRANCE<br>
-                > DÉPT : 80 (SOMME)<br>
-                > VILLE : RIVERY / AMIENS<br>
-                > IP : 192.168.1.XX (TRACKED)
-            </div>
-
-            <div id="timer">60</div>
-            <p id="instruction">TENTATIVE DE FERMETURE = SCREAMER IMMÉDIAT</p>
-            
-            <a id="download-link" href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Perfect_Strawberry.jpg/800px-Perfect_Strawberry.jpg" download="CLE-DE-DECRYPTAGE-80.jpg" class="btn-download">
-                📥 TÉLÉCHARGER LA CLÉ DE DÉCRYPTAGE
-            </a>
-        </div>
+    <div id="click-screen" onclick="launchFinalAttack()" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000; background:black; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;">
+        <h1 style="color:white; font-family: sans-serif;">⚠️ ERREUR DE SERVEUR ROBLOX ⚠️</h1>
+        <p style="color:gray;">La session a expiré. Cliquez pour vous reconnecter.</p>
+        <div style="background:white; color:black; padding: 15px; font-weight:bold; border-radius:5px;">RECONNEXION PRIORITAIRE</div>
     </div>
 
     <script>
-        const alarm = new Audio('https://www.myinstants.com/media/sounds/nuke-alarm.mp3');
-        const scream = new Audio('https://www.myinstants.com/media/sounds/screamer.mp3');
-        let timeLeft = 60;
-        let prankActive = false;
+        const screamSound = new Audio('https://www.myinstants.com/media/sounds/screamer.mp3');
+        const alarmSound = new Audio('https://www.myinstants.com/media/sounds/nuke-alarm.mp3');
 
-        function startPrank() {
-            prankActive = true;
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-            if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen(); }
-            
-            alarm.play();
-            alarm.loop = true;
+        function launchFinalAttack() {
+            // 1. Passage en plein écran
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            }
 
-            let countdown = setInterval(() => {
-                timeLeft--;
-                document.getElementById('timer').innerText = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    triggerScreamer();
-                }
-            }, 1000);
-        }
-
-        function triggerScreamer() {
-            alarm.pause();
-            scream.play();
-            document.getElementById('screamer').style.display = 'block';
-            if (navigator.vibrate) { navigator.vibrate([1000, 500, 2000]); }
+            // 2. Flash blanc de l'appareil photo
+            document.getElementById('flash').style.display = 'block';
             
             setTimeout(() => {
-                document.getElementById('screamer').style.display = 'none';
-                document.body.style.cursor = 'default';
-                document.getElementById('timer').style.display = 'none';
-                document.getElementById('instruction').innerText = "VOTRE SYSTÈME EST MAINTENANT AUX MAINS DU 80. 🍓";
-                document.getElementById('download-link').style.display = 'inline-block';
-                alert("ALERTE TERMINÉE !\n\nRécupère ta clé de décryptage maintenant... si tu l'oses. 😂");
-            }, 3000);
+                document.getElementById('flash').style.display = 'none';
+                document.getElementById('click-screen').style.display = 'none';
+                
+                // 3. Affichage immédiat du screamer (sa photo) + Cri
+                document.getElementById('screamer-container').style.display = 'block';
+                screamSound.play();
+                
+                // Vibration téléphone
+                if (navigator.vibrate) { navigator.vibrate([500, 100, 500, 100, 1000]); }
+
+                // 4. Après 3 secondes de cri, on passe au message de rançon
+                setTimeout(() => {
+                    screamSound.pause();
+                    alarmSound.play();
+                    alarmSound.loop = true;
+                    showRansom();
+                }, 3500);
+            }, 150);
         }
 
-        window.onkeydown = function() {
-            if(prankActive) triggerScreamer();
+        function showRansom() {
+            // On remplace le contenu par le message final
+            document.body.innerHTML = `
+                <div id="ransom-box">
+                    <h1 class="glitch">SYSTÈME PIRATÉ PAR LE 80 🍓</h1>
+                    <div class="loc-box">
+                        > CIBLE : IDENTIFIÉE (VOIR PHOTO)<br>
+                        > LOCALISATION : SOMME, HAUTS-DE-FRANCE<br>
+                        > ACTION : DONNÉES EN COURS D'ENVOI...
+                    </div>
+                    <h2 style="color:yellow; margin-top:20px;">RANÇON : 1 STRAWBERRY 🍓</h2>
+                    <p style="color:white;">Envoie une fraise à ton pote pour débloquer ton PC.</p>
+                    <button onclick="location.reload()" style="background:red; color:white; border:none; padding:10px; cursor:pointer;">RESAUVER LE SYSTÈME</button>
+                </div>
+            `;
+            document.body.style.cursor = 'default';
+        }
+
+        // Empêche de quitter
+        window.onbeforeunload = function() {
+            return "ALERTE : Le transfert de vos photos est en cours...";
         };
     </script>
 </body>
 </html>
-
-
