@@ -2,32 +2,49 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>🚨 CRITICAL SYSTEM FAILURE 🚨</title>
+    <title> CRITICAL_SYSTEM_OVERHEAT </title>
     <style>
-        body { background-color: #000; color: #ff0000; font-family: 'Courier New', monospace; margin: 0; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; cursor: none; }
+        body { background-color: #000; color: #ff0000; font-family: 'Courier New', monospace; margin: 0; overflow: hidden; height: 100vh; cursor: none; }
         
-        /* Le Screamer avec sa photo */
         #screamer-container {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #000; z-index: 9999; display: none; text-align: center;
+            background: #000; z-index: 9999; display: none;
         }
+
+        /* Sa photo avec effet de chaleur (ondulation et rouge) */
         #victim-photo {
-            width: 100%; height: 100%; object-fit: cover; /* La photo prend tout l'écran */
-            filter: contrast(150%) brightness(80%) sepia(50%) hue-rotate(-50deg); /* Effet caméra de surveillance sale */
+            width: 100%; height: 100%; object-fit: cover;
+            filter: contrast(160%) brightness(60%) sepia(80%) saturate(300%);
+            animation: heatWave 0.2s infinite alternate;
         }
-        
+
+        @keyframes heatWave {
+            from { filter: hue-rotate(0deg) brightness(60%); transform: scale(1); }
+            to { filter: hue-rotate(20deg) brightness(90%); transform: scale(1.02); }
+        }
+
+        /* Fenêtres d'erreur qui s'empilent */
+        .error-popup {
+            position: absolute; background: #c0c0c0; border: 2px solid #fff;
+            border-right-color: #808080; border-bottom-color: #808080;
+            color: black; padding: 10px; font-family: 'Tahoma', sans-serif;
+            font-size: 12px; z-index: 10001; box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+        }
+
         #overlay-text {
             position: absolute; top: 20px; left: 20px; color: #00ff00; 
-            text-align: left; font-size: 1.2rem; text-shadow: 2px 2px black;
+            z-index: 10005; font-size: 1.2rem; text-shadow: 2px 2px #000;
+        }
+
+        #temp-display {
+            position: absolute; top: 20px; right: 20px; color: #ffae00;
+            font-size: 2rem; font-weight: bold; z-index: 10005;
         }
 
         #flash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; z-index: 10000; display: none;
+            background: white; z-index: 10002; display: none;
         }
-
-        #ransom-box { border: 4px dashed red; padding: 20px; background: rgba(20, 0, 0, 0.9); z-index: 10; }
-        .loc-box { color: #00ff00; background: #111; padding: 10px; border: 1px solid #00ff00; font-size: 0.8rem; text-align: left; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -35,77 +52,76 @@
     <div id="flash"></div>
 
     <div id="screamer-container">
+        <div id="temp-display">CPU TEMP: <span id="cpu-temp">45</span>°C</div>
         <div id="overlay-text">
-            > REC_STREAM: ACTIVE<br>
-            > USER_FOUND: LOCAL_TARGET<br>
+            > WARNING: CPU_FAN_FAILURE<br>
+            > TARGET: IDENTIFIED<br>
             > LOCATION: DEPT 80 (SOMME)<br>
-            > IP_STATUS: TRACKED
+            > STATUS: CORE_MELTDOWN_IMMINENT
         </div>
+        
         <img id="victim-photo" src="https://i.ibb.co/8ggBZMhn/image.jpg" alt="Target">
     </div>
 
-    <div id="click-screen" onclick="launchFinalAttack()" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000; background:black; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;">
-        <h1 style="color:white; font-family: sans-serif;">⚠️ ERREUR DE SERVEUR ROBLOX ⚠️</h1>
-        <p style="color:gray;">La session a expiré. Cliquez pour vous reconnecter.</p>
-        <div style="background:white; color:black; padding: 15px; font-weight:bold; border-radius:5px;">RECONNEXION PRIORITAIRE</div>
+    <div id="click-screen" onclick="launchMeltdown()" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000; background:black; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; text-align:center;">
+        <h1 style="color:white; font-family: sans-serif;">⚠️ ACCÈS SÉCURISÉ ROBLOX ⚠️</h1>
+        <p style="color:gray;">Vérification du matériel en cours...</p>
+        <div style="border: 2px solid #ff0000; color:#ff0000; padding: 20px; font-weight:bold;">DÉMARRER LE SCAN</div>
     </div>
 
     <script>
         const screamSound = new Audio('https://www.myinstants.com/media/sounds/screamer.mp3');
-        const alarmSound = new Audio('https://www.myinstants.com/media/sounds/nuke-alarm.mp3');
+        screamSound.loop = true;
 
-        function launchFinalAttack() {
-            // 1. Passage en plein écran
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            }
+        function launchMeltdown() {
+            if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen(); }
 
-            // 2. Flash blanc de l'appareil photo
             document.getElementById('flash').style.display = 'block';
             
             setTimeout(() => {
                 document.getElementById('flash').style.display = 'none';
                 document.getElementById('click-screen').style.display = 'none';
-                
-                // 3. Affichage immédiat du screamer (sa photo) + Cri
                 document.getElementById('screamer-container').style.display = 'block';
                 screamSound.play();
-                
-                // Vibration téléphone
-                if (navigator.vibrate) { navigator.vibrate([500, 100, 500, 100, 1000]); }
 
-                // 4. Après 3 secondes de cri, on passe au message de rançon
-                setTimeout(() => {
-                    screamSound.pause();
-                    alarmSound.play();
-                    alarmSound.loop = true;
-                    showRansom();
-                }, 3500);
-            }, 150);
+                // 1. Faire monter la température
+                let temp = 45;
+                setInterval(() => {
+                    if(temp < 105) {
+                        temp += Math.floor(Math.random() * 5);
+                        document.getElementById('cpu-temp').innerText = temp;
+                        if(temp > 90) document.getElementById('cpu-temp').style.color = "red";
+                    }
+                }, 500);
+
+                // 2. Faire apparaître des erreurs partout
+                setInterval(createError, 400);
+
+            }, 100);
         }
 
-        function showRansom() {
-            // On remplace le contenu par le message final
-            document.body.innerHTML = `
-                <div id="ransom-box">
-                    <h1 class="glitch">SYSTÈME PIRATÉ PAR LE 80 🍓</h1>
-                    <div class="loc-box">
-                        > CIBLE : IDENTIFIÉE (VOIR PHOTO)<br>
-                        > LOCALISATION : SOMME, HAUTS-DE-FRANCE<br>
-                        > ACTION : DONNÉES EN COURS D'ENVOI...
-                    </div>
-                    <h2 style="color:yellow; margin-top:20px;">RANÇON : 1 STRAWBERRY 🍓</h2>
-                    <p style="color:white;">Envoie une fraise à ton pote pour débloquer ton PC.</p>
-                    <button onclick="location.reload()" style="background:red; color:white; border:none; padding:10px; cursor:pointer;">RESAUVER LE SYSTÈME</button>
-                </div>
-            `;
-            document.body.style.cursor = 'default';
+        function createError() {
+            const errors = [
+                "FATAL ERROR: C:/Windows/System32 corrompu",
+                "Surchauffe matérielle détectée !",
+                "GPU Fan: 0 RPM",
+                "Accès interdit - Hacker du 80",
+                "Suppression des données personnelles...",
+                "STRAWBERRY VIRUS: Overheat.exe"
+            ];
+            const div = document.createElement('div');
+            div.className = 'error-popup';
+            div.innerText = errors[Math.floor(Math.random() * errors.length)];
+            div.style.left = Math.random() * 70 + "%";
+            div.style.top = Math.random() * 70 + "%";
+            document.getElementById('screamer-container').appendChild(div);
+            
+            if (navigator.vibrate) { navigator.vibrate(200); }
         }
 
-        // Empêche de quitter
-        window.onbeforeunload = function() {
-            return "ALERTE : Le transfert de vos photos est en cours...";
-        };
+        window.onkeydown = () => false;
+        window.onbeforeunload = () => "VOTRE PC EST EN TRAIN DE BRULER. QUITTER MAINTENANT CAUSERA UN INCENDIE.";
     </script>
 </body>
 </html>
+
